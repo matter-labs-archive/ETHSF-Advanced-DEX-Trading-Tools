@@ -38,7 +38,7 @@ extension Double {
             return formattedNumber
         } else {
             return self.description
-        }        
+        }
     }
 
 //    func withCommas(_ digits: Int = 4) -> String {

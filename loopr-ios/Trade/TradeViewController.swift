@@ -12,12 +12,6 @@ import StepSlider
 
 class TradeViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate, NumericKeyboardDelegate, NumericKeyboardProtocol, StepSliderDelegate {
     
-    // Header
-    @IBOutlet weak var headerButton: UIButton!
-    @IBOutlet weak var tradingPairTokenSLabel: UILabel!
-    @IBOutlet weak var tradingPairTokenSLabelWidthLayoutConstraint: NSLayoutConstraint!
-    @IBOutlet weak var tradingPairTokenBLabel: UILabel!
-    
     // container
     @IBOutlet weak var containerView: UIView!
     
@@ -27,6 +21,11 @@ class TradeViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
     @IBOutlet weak var estimateValueInCurrency: UILabel!
     @IBOutlet weak var sellTokenLabel: UILabel!
 
+    // Price
+    @IBOutlet weak var priceTextField: UITextField!
+    @IBOutlet weak var priceLabel: UILabel!
+    
+    // Swap
     @IBOutlet weak var swapTokenButton: UIButton!
     
     // TokenB
@@ -82,23 +81,7 @@ class TradeViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
         self.navigationItem.title = LocalizedString("P2P Trade", comment: "")
         setBackButton()
         
-        headerButton.clipsToBounds = true
-        headerButton.layer.cornerRadius = 6
-        /*
-        headerButton.applyGradient(withColors: UIColor.secondary, gradientOrientation: .horizontal)
-        */
-        headerButton.theme_setBackgroundImage(ColorPicker.button, forState: .normal)
-        headerButton.theme_setBackgroundImage(ColorPicker.buttonSelected, forState: .highlighted)
-
-        headerButton.addTarget(self, action: #selector(pressedHeaderButton), for: .touchUpInside)
-
         swapTokenButton.addTarget(self, action: #selector(pressedHeaderButton), for: .touchUpInside)
-
-        tradingPairTokenSLabel.font = FontConfigManager.shared.getMediumFont(size: 16)
-        tradingPairTokenSLabel.theme_textColor = GlobalPicker.textColor
-        
-        tradingPairTokenBLabel.font = FontConfigManager.shared.getMediumFont(size: 16)
-        tradingPairTokenBLabel.theme_textColor = GlobalPicker.textColor
 
         containerView.theme_backgroundColor = ColorPicker.cardBackgroundColor
 
@@ -121,6 +104,14 @@ class TradeViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
         sellTokenLabelTap.numberOfTapsRequired = 1
         sellTokenLabel.addGestureRecognizer(sellTokenLabelTap)
         sellTokenLabel.isUserInteractionEnabled = true
+        
+        priceTextField.delegate = self
+        priceTextField.tag = 2
+        priceTextField.inputView = UIView()
+        priceTextField.font = FontConfigManager.shared.getDigitalFont()
+        priceTextField.theme_tintColor = GlobalPicker.contrastTextColor
+        priceTextField.placeholder = LocalizedString("Price", comment: "")
+        priceTextField.setLeftPaddingPoints(8)
         
         // Second row: TokenB
         amountBuyTextField.delegate = self
@@ -196,6 +187,24 @@ class TradeViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
         blurVisualEffectView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
         blurVisualEffectView.alpha = 1
         blurVisualEffectView.frame = UIScreen.main.bounds
+        
+        // Init values
+        var message: String = ""
+        let tokens = TradeDataManager.shared.tokenS.symbol
+        let tokenb = TradeDataManager.shared.tokenB.symbol
+        
+        let title = LocalizedString("Available Balance", comment: "")
+        
+        if let asset = CurrentAppWalletDataManager.shared.getAsset(symbol: tokens) {
+            message = "\(title) \(asset.display) \(tokens)"
+        } else {
+            message = "\(title) 0.0 \(tokens)"
+        }
+        buyTokenLabel.text = tokenb
+        sellTokenLabel.text = tokens
+        estimateValueInCurrency.text = message
+        
+        priceLabel.text = "\(tokens)/\(tokenb)"
     }
 
     override func didReceiveMemoryWarning() {
@@ -235,10 +244,6 @@ class TradeViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
         let tokens = TradeDataManager.shared.tokenS.symbol
         let tokenb = TradeDataManager.shared.tokenB.symbol
         
-        tradingPairTokenSLabel.text = tokens
-        tradingPairTokenSLabelWidthLayoutConstraint.constant = tokens.textWidth(font: tradingPairTokenSLabel.font) + 2
-        tradingPairTokenBLabel.text = tokenb
-        
         let title = LocalizedString("Available Balance", comment: "")
         
         if let asset = CurrentAppWalletDataManager.shared.getAsset(symbol: tokens) {
@@ -248,11 +253,11 @@ class TradeViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
         }
         buyTokenLabel.text = tokenb
         sellTokenLabel.text = tokens
-        estimateValueInCurrency.text = text ?? message
-        estimateValueInCurrency.textColor = color ?? .text2
-        if color == .fail {
-            estimateValueInCurrency.shake()
-        }
+        // estimateValueInCurrency.text = text ?? message
+        // estimateValueInCurrency.textColor = color ?? .text2
+        // if color == .fail {
+        //     estimateValueInCurrency.shake()
+        // }
     }
     
     @objc func scrollViewTapped() {
@@ -464,12 +469,29 @@ class TradeViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
         }
     }
     
+    func validatePrice() -> Bool {
+        if let priceText = priceTextField.text, let price = Double(priceText) {
+            if let amounts = amountSellTextField.text, let amountSell = Double(amounts) {
+                let amountBuy = amountSell * price
+                amountBuyTextField.text = amountBuy.withCommas(20).trailingZero()
+            }
+            return true
+        } else {
+            return false
+        }
+    }
+    
     func validate() -> Bool {
         var isValid = false
         if activeTextFieldTag == amountSellTextField.tag {
             isValid = validateAmountSell()
         } else if activeTextFieldTag == amountBuyTextField.tag {
             isValid = validateAmountBuy()
+        } else if activeTextFieldTag == priceTextField.tag {
+            isValid = validatePrice()
+        }
+        if isValid {
+            _ = validatePrice()
         }
         return isValid
     }
@@ -491,6 +513,8 @@ class TradeViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
             return amountSellTextField
         } else if activeTextFieldTag == amountBuyTextField.tag {
             return amountBuyTextField
+        } else if activeTextFieldTag == priceTextField.tag {
+            return priceTextField
         } else {
             return nil
         }
@@ -569,6 +593,7 @@ class TradeViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
     }
 
     func numericKeyboard(_ numericKeyboard: NumericKeyboard, itemLongPressed item: NumericKeyboardItem, atPosition position: Position) {
+        /*
         print("Long pressed keyboard: (\(position.row), \(position.column))")
         let activeTextField = getActiveTextField()
         guard activeTextField != nil else {
@@ -581,6 +606,7 @@ class TradeViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
             }
             activeTextField!.text = currentText
         }
+        */
     }
     
     func stepSliderValueChanged(_ value: Double) {
@@ -595,7 +621,7 @@ class TradeViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
             message = "\(title) 0.0 \(tokens)"
             amountSellTextField.text = "0.0"
         }
-        estimateValueInCurrency.text = message
+        // estimateValueInCurrency.text = message
         estimateValueInCurrency.textColor = .text2
         activeTextFieldTag = amountSellTextField.tag
         _ = validate()
