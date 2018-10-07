@@ -99,11 +99,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if url.host == nil {
             return true
         }
-        let queryArray = url.absoluteString.components(separatedBy: "/")
-        let unescaped = queryArray[2].removingPercentEncoding!
-        AuthorizeDataManager.shared.process(qrContent: unescaped)
-        if let main = self.window?.rootViewController as? MainTabController {
-            main.processExternalUrl()
+        if let parsed = parseDeepLink(url: url) {
+            if parsed.type == .p2pOrder {
+                TradeDataManager.shared.handleResult(of: parsed.value)
+                let vc = TradeConfirmationViewController()
+                vc.view.theme_backgroundColor = ColorPicker.backgroundColor
+                vc.order = TradeDataManager.shared.orders[1]
+                window?.rootViewController = vc
+            }
+        } else {
+            let queryArray = url.absoluteString.components(separatedBy: "/")
+            let unescaped = queryArray[2].removingPercentEncoding!
+            AuthorizeDataManager.shared.process(qrContent: unescaped)
+            if let main = self.window?.rootViewController as? MainTabController {
+                main.processExternalUrl()
+            }
         }
         return true
     }
@@ -252,5 +262,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                customAttributes: [
                                "error": error.localizedDescription])
     }
+    
+    private func parseDeepLink(url: URL) -> ParsedDeepLink? {
+        var type: QRCodeType
+        let queryArray = url.absoluteString.components(separatedBy: "/")
+        guard queryArray.count > 2 else { return nil }
+        if queryArray[2] == "p2p" {
+            type = .p2pOrder
+        } else {
+            return nil
+        }
+        let valueComponents = queryArray[3].components(separatedBy: "&")
+        var res = [String: String]()
+        valueComponents.forEach{
+            let a = $0.components(separatedBy: "=")
+            res[a[0]] = a[1]
+        }
+        return ParsedDeepLink(type: type, value: JSON(res))
+    }
 
+}
+
+struct ParsedDeepLink {
+    let type: QRCodeType
+    let value: JSON
 }
