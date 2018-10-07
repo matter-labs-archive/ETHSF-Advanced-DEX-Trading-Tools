@@ -37,8 +37,15 @@ class BuyAndSellSwipeViewController: SwipeViewController {
         
         vc1.initialPrice = initialPrice
         vc2.initialPrice = initialPrice
+        
+        if !tokenBuyBalanceIsZero() {
+            viewControllers.append(vc1)
+        }
+        
+        if !tokenSellBalanceIsZero() {
+            viewControllers.append(vc2)
+        }
 
-        viewControllers = [vc1, vc2]
         for viewController in viewControllers {
             self.addChildViewController(viewController)
         }
@@ -99,5 +106,23 @@ class BuyAndSellSwipeViewController: SwipeViewController {
     
     override func swipeView(_ swipeView: SwipeView, viewControllerForPageAt index: Int) -> UIViewController {
         return viewControllers[index]
+    }
+    
+    func tokenSellBalanceIsZero() -> Bool {
+        let tokenS = PlaceOrderDataManager.shared.tokenA.symbol
+        if let asset = CurrentAppWalletDataManager.shared.getAsset(symbol: tokenS) {
+            return asset.balance == 0 ? true : false
+        } else {
+            return false
+        }
+    }
+    
+    func tokenBuyBalanceIsZero() -> Bool {
+        let tokenS = PlaceOrderDataManager.shared.tokenB.symbol
+        if let asset = CurrentAppWalletDataManager.shared.getAsset(symbol: tokenS) {
+            return asset.balance == 0 ? true : false
+        } else {
+            return false
+        }
     }
 }

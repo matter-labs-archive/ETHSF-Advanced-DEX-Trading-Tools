@@ -65,6 +65,23 @@ class MarketDetailViewController: UIViewController {
             padding += " "
         }
         buttonInNavigationBar.title = padding + market!.description
+        
+        setButtonsAvailability()
+    }
+    
+    func setButtonsAvailability() {
+        
+        let sellAvailable = !tokenSellBalanceIsZero()
+        let buyAvailable = !tokenBuyBalanceIsZero()
+        
+        if !sellAvailable {
+            sellButton.isEnabled = false
+            sellButton.alpha = 0.4
+        }
+        if !buyAvailable {
+            buyButton.isEnabled = false
+            buyButton.alpha = 0.4
+        }
     }
     
     func setupMarket() {
@@ -123,5 +140,23 @@ class MarketDetailViewController: UIViewController {
         viewController.market = market
         viewController.initialType = .buy
         self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func tokenSellBalanceIsZero() -> Bool {
+        let tokenS = PlaceOrderDataManager.shared.tokenA.symbol
+        if let asset = CurrentAppWalletDataManager.shared.getAsset(symbol: tokenS) {
+            return asset.balance == 0 ? true : false
+        } else {
+            return false
+        }
+    }
+    
+    func tokenBuyBalanceIsZero() -> Bool {
+        let tokenS = PlaceOrderDataManager.shared.tokenB.symbol
+        if let asset = CurrentAppWalletDataManager.shared.getAsset(symbol: tokenS) {
+            return asset.balance == 0 ? true : false
+        } else {
+            return false
+        }
     }
 }
