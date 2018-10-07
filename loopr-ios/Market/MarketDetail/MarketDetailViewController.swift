@@ -9,6 +9,8 @@
 import UIKit
 
 class MarketDetailViewController: UIViewController {
+    
+    let anavailableAlpha: CGFloat = 0.4
 
     var market: Market!
     var marketDetailSwipeViewController = MarketDetailSwipeViewController()
@@ -76,11 +78,11 @@ class MarketDetailViewController: UIViewController {
         
         if !sellAvailable {
             sellButton.isEnabled = false
-            sellButton.alpha = 0.4
+            sellButton.alpha = anavailableAlpha
         }
         if !buyAvailable {
             buyButton.isEnabled = false
-            buyButton.alpha = 0.4
+            buyButton.alpha = anavailableAlpha
         }
     }
     

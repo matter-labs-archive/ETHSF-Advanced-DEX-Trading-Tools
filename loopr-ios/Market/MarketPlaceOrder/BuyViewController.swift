@@ -11,6 +11,11 @@ import Geth
 import StepSlider
 
 class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate, NumericKeyboardDelegate, NumericKeyboardProtocol, StepSliderDelegate {
+    
+    enum sliderViewHeightConstant: CGFloat {
+        case open = 42
+        case closed = 0
+    }
 
     var market: Market!
     
@@ -33,6 +38,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
     
     // Slider
     @IBOutlet weak var sliderView: UIView!
+    @IBOutlet weak var sliderViewHeight: NSLayoutConstraint!
     
     // TTL Buttons
     @IBOutlet weak var hourButton: UIButton!
@@ -206,9 +212,12 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         if self.type == .buy {
             self.tokenB = PlaceOrderDataManager.shared.tokenA.symbol
             self.tokenS = PlaceOrderDataManager.shared.tokenB.symbol
+            sliderViewHeight.constant = sliderViewHeightConstant.closed.rawValue
+            stepSlider.isHidden = true
         } else {
             self.tokenB = PlaceOrderDataManager.shared.tokenB.symbol
             self.tokenS = PlaceOrderDataManager.shared.tokenA.symbol
+            sliderViewHeight.constant = sliderViewHeightConstant.open.rawValue
         }
         if let asset = CurrentAppWalletDataManager.shared.getAsset(symbol: tokenS) {
             message = "\(title) \(asset.display) \(self.tokenS)"
@@ -315,6 +324,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         if let asset = CurrentAppWalletDataManager.shared.getAsset(symbol: tokenS) {
             message = "\(title) \(asset.display) \(tokenS)"
             amountTextField.text = (asset.balance * value).withCommas(length)
+            print((asset.balance * value).withCommas(length))
 //            // Only validate when balance is larger than 0.
 //            if asset.balance > 0 {
 //                _ = validate()
@@ -375,6 +385,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
 
     @IBAction func pressedPlaceOrderButton(_ sender: Any) {
         print("pressedPlaceOrderButton")
+        _ = validate()
         hideNumericKeyboard()
         priceTextField.resignFirstResponder()
         amountTextField.resignFirstResponder()
