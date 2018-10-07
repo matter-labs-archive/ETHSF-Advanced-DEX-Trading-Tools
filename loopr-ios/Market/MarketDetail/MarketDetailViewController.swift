@@ -9,6 +9,8 @@
 import UIKit
 
 class MarketDetailViewController: UIViewController {
+    
+    let anavailableAlpha: CGFloat = 0.4
 
     var market: Market!
     var marketDetailSwipeViewController = MarketDetailSwipeViewController()
@@ -65,6 +67,23 @@ class MarketDetailViewController: UIViewController {
             padding += " "
         }
         buttonInNavigationBar.title = padding + market!.description
+        
+        setButtonsAvailability()
+    }
+    
+    func setButtonsAvailability() {
+        
+        let sellAvailable = !tokenSellBalanceIsZero()
+        let buyAvailable = !tokenBuyBalanceIsZero()
+        
+        if !sellAvailable {
+            sellButton.isEnabled = false
+            sellButton.alpha = anavailableAlpha
+        }
+        if !buyAvailable {
+            buyButton.isEnabled = false
+            buyButton.alpha = anavailableAlpha
+        }
     }
     
     func setupMarket() {
@@ -123,5 +142,23 @@ class MarketDetailViewController: UIViewController {
         viewController.market = market
         viewController.initialType = .buy
         self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func tokenSellBalanceIsZero() -> Bool {
+        let tokenS = PlaceOrderDataManager.shared.tokenA.symbol
+        if let asset = CurrentAppWalletDataManager.shared.getAsset(symbol: tokenS) {
+            return asset.balance == 0 ? true : false
+        } else {
+            return false
+        }
+    }
+    
+    func tokenBuyBalanceIsZero() -> Bool {
+        let tokenS = PlaceOrderDataManager.shared.tokenB.symbol
+        if let asset = CurrentAppWalletDataManager.shared.getAsset(symbol: tokenS) {
+            return asset.balance == 0 ? true : false
+        } else {
+            return false
+        }
     }
 }

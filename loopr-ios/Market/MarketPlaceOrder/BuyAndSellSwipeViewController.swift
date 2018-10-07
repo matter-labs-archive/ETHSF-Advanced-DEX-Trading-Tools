@@ -37,8 +37,23 @@ class BuyAndSellSwipeViewController: SwipeViewController {
         
         vc1.initialPrice = initialPrice
         vc2.initialPrice = initialPrice
-
-        viewControllers = [vc1, vc2]
+        
+        var initIndex = initialType == .buy ? 0 : 1
+        
+        if !tokenBuyBalanceIsZero() {
+            viewControllers.append(vc1)
+        } else {
+            initIndex = 0
+            types = [.sell]
+        }
+        
+        if !tokenSellBalanceIsZero() {
+            viewControllers.append(vc2)
+        } else {
+            initIndex = 0
+            types = [.buy]
+        }
+        
         for viewController in viewControllers {
             self.addChildViewController(viewController)
         }
@@ -50,7 +65,6 @@ class BuyAndSellSwipeViewController: SwipeViewController {
             options.swipeTabView.itemView.textColor = UIColor(rgba: "#00000099")
             options.swipeTabView.itemView.selectedTextColor = UIColor(rgba: "#000000cc")
         }
-        let initIndex = initialType == .buy ? 0 : 1
         swipeView.reloadData(options: options, default: initIndex)
     }
 
@@ -99,5 +113,23 @@ class BuyAndSellSwipeViewController: SwipeViewController {
     
     override func swipeView(_ swipeView: SwipeView, viewControllerForPageAt index: Int) -> UIViewController {
         return viewControllers[index]
+    }
+    
+    func tokenSellBalanceIsZero() -> Bool {
+        let tokenS = PlaceOrderDataManager.shared.tokenA.symbol
+        if let asset = CurrentAppWalletDataManager.shared.getAsset(symbol: tokenS) {
+            return asset.balance == 0 ? true : false
+        } else {
+            return false
+        }
+    }
+    
+    func tokenBuyBalanceIsZero() -> Bool {
+        let tokenB = PlaceOrderDataManager.shared.tokenB.symbol
+        if let asset = CurrentAppWalletDataManager.shared.getAsset(symbol: tokenB) {
+            return asset.balance == 0 ? true : false
+        } else {
+            return false
+        }
     }
 }
