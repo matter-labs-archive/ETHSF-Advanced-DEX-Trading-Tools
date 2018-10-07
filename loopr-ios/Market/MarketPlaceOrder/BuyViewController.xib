@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -61,7 +62,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lJs-6Q-pnw">
-                                    <rect key="frame" x="280.33333333333331" y="31.333333333333336" width="41.666666666666686" height="20.333333333333336"/>
+                                    <rect key="frame" x="280.33333333333331" y="31" width="41.666666666666686" height="20.333333333333329"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" name="Color-dark4"/>
                                     <nil key="highlightedColor"/>
@@ -78,7 +79,7 @@
                                     </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Cv-AI-Sk9">
-                                    <rect key="frame" x="16" y="74" width="31" height="14.333333333333329"/>
+                                    <rect key="frame" x="16" y="74" width="31" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" name="Color-text1"/>
                                     <nil key="highlightedColor"/>
@@ -185,19 +186,42 @@
                                         <action selector="pressedPlaceOrderButton:" destination="-1" eventType="touchUpInside" id="lFj-N1-0v9"/>
                                     </connections>
                                 </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8PH-rd-O04">
+                                    <rect key="frame" x="246" y="74" width="120" height="30"/>
+                                    <color key="backgroundColor" name="Color-green"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="120" id="jIe-Xh-66f">
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="4"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </constraint>
+                                    </constraints>
+                                    <state key="normal" title="Set best price">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="setBestPrice:" destination="-1" eventType="touchUpInside" id="ABj-gm-B5u"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <constraints>
                                 <constraint firstItem="GAR-qN-xvf" firstAttribute="leading" secondItem="nYT-au-ghz" secondAttribute="leading" constant="12" id="243-iE-0LA"/>
                                 <constraint firstItem="GAR-qN-xvf" firstAttribute="centerY" secondItem="nYT-au-ghz" secondAttribute="centerY" id="3Ld-Jf-Dj8"/>
                                 <constraint firstAttribute="height" constant="370" id="77L-pZ-Qbu"/>
                                 <constraint firstItem="POe-BV-ibP" firstAttribute="leading" secondItem="k9h-xW-rQZ" secondAttribute="leading" constant="16" id="7XW-hp-wW7"/>
+                                <constraint firstItem="8PH-rd-O04" firstAttribute="top" secondItem="0Cv-AI-Sk9" secondAttribute="top" id="AtF-Dv-2hN"/>
                                 <constraint firstItem="Niq-X3-TVH" firstAttribute="top" secondItem="nYT-au-ghz" secondAttribute="bottom" constant="40" id="BNF-9P-Wla"/>
                                 <constraint firstItem="nYT-au-ghz" firstAttribute="top" secondItem="POe-BV-ibP" secondAttribute="bottom" constant="40" id="E5R-b4-xTe"/>
                                 <constraint firstAttribute="trailing" secondItem="Fb9-mL-KG5" secondAttribute="trailing" constant="16" id="E5X-cg-VZP"/>
                                 <constraint firstAttribute="trailing" secondItem="nYT-au-ghz" secondAttribute="trailing" constant="16" id="HtZ-go-pmW"/>
                                 <constraint firstItem="eJV-rg-daP" firstAttribute="centerY" secondItem="POe-BV-ibP" secondAttribute="centerY" id="IM2-OK-1b6"/>
+                                <constraint firstItem="8PH-rd-O04" firstAttribute="trailing" secondItem="eJV-rg-daP" secondAttribute="trailing" id="Jwg-6w-GVr"/>
+                                <constraint firstItem="8PH-rd-O04" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="0Cv-AI-Sk9" secondAttribute="trailing" constant="10" id="K9v-eS-PHK"/>
                                 <constraint firstAttribute="trailing" secondItem="POe-BV-ibP" secondAttribute="trailing" constant="16" id="LRV-Vp-T5m"/>
                                 <constraint firstItem="Di1-jg-ePv" firstAttribute="leading" secondItem="POe-BV-ibP" secondAttribute="leading" constant="12" id="LoD-z1-jl4"/>
+                                <constraint firstItem="8PH-rd-O04" firstAttribute="bottom" secondItem="0Cv-AI-Sk9" secondAttribute="bottom" id="Ml1-aK-nmJ"/>
                                 <constraint firstItem="POe-BV-ibP" firstAttribute="top" secondItem="k9h-xW-rQZ" secondAttribute="top" constant="16" id="MnL-CC-ip6"/>
                                 <constraint firstItem="JUT-ee-RXX" firstAttribute="leading" secondItem="nYT-au-ghz" secondAttribute="leading" id="NTX-vs-J2v"/>
                                 <constraint firstItem="0Cv-AI-Sk9" firstAttribute="top" secondItem="POe-BV-ibP" secondAttribute="bottom" constant="8" id="QtN-PD-uNu"/>
@@ -251,6 +275,9 @@
         <image name="Caret-down-dark" width="50" height="50"/>
         <namedColor name="Color-dark4">
             <color red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="Color-green">
+            <color red="0.29803921568627451" green="0.80392156862745101" blue="0.41568627450980394" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="Color-text1">
             <color red="1" green="1" blue="1" alpha="0.80000001192092896" colorSpace="custom" customColorSpace="displayP3"/>
