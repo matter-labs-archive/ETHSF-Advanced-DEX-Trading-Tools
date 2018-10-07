@@ -107,12 +107,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 vc.order = TradeDataManager.shared.orders[1]
                 window?.rootViewController = vc
             }
-        }
-        let queryArray = url.absoluteString.components(separatedBy: "/")
-        let unescaped = queryArray[2].removingPercentEncoding!
-        AuthorizeDataManager.shared.process(qrContent: unescaped)
-        if let main = self.window?.rootViewController as? MainTabController {
-            main.processExternalUrl()
+        } else {
+            let queryArray = url.absoluteString.components(separatedBy: "/")
+            let unescaped = queryArray[2].removingPercentEncoding!
+            AuthorizeDataManager.shared.process(qrContent: unescaped)
+            if let main = self.window?.rootViewController as? MainTabController {
+                main.processExternalUrl()
+            }
         }
         return true
     }
