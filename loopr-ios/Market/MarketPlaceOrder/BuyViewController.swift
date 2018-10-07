@@ -216,6 +216,23 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
             message = "\(title) 0.0 \(tokenS)"
         }
         tipLabel.text = message
+        
+        getRangePrices { [weak self] (result) in
+            self?.setRangePrices(for: result)
+        }
+    }
+    
+    func setRangePrices(for prices: (minSell: Double?, maxBuy: Double?)) {
+        let (minSell, maxBuy) = prices
+        let price = type == .buy ? minSell : maxBuy
+        priceTextField.text = price != nil ? String(format:"%f", price!) : nil
+        if price == nil {
+            let depthType = type == .buy ? "sell" : "buy"
+            estimateValueInCurrencyLabel.isHidden = false
+            estimateValueInCurrencyLabel.textColor = .fail
+            estimateValueInCurrencyLabel.text = "No \(depthType) depths in market"
+            estimateValueInCurrencyLabel.shake()
+        }
     }
     
     @objc func scrollViewTapped() {
@@ -613,6 +630,40 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
             }
             activeTextField!.text = currentText
         }
+    }
+    
+    @IBAction func setBestPrice(_ sender: UIButton) {
+        getRangePrices { [weak self] (result) in
+            self?.setRangePrices(for: result)
+        }
+    }
+    
+    func getRangePrices(completion: @escaping((minSell: Double?, maxBuy: Double?)) -> Void) {
+        let buys = MarketDepthDataManager.shared.getBuys()
+        let sells = MarketDepthDataManager.shared.getSells()
+        print("buys")
+        var buyPrices = [Double]()
+        for buy in buys {
+            print(buy.price)
+            if let priceInDouble = Double(buy.price) {
+                buyPrices.append(priceInDouble)
+            }
+            
+        }
+        let buyMax = buyPrices.max()
+        print("sells")
+        var sellPrices = [Double]()
+        for sell in sells {
+            print(sell.price)
+            if let priceInDouble = Double(sell.price) {
+                sellPrices.append(priceInDouble)
+            }
+        }
+        let sellMin = sellPrices.min()
+        
+        completion((minSell: sellMin,
+                    maxBuy: buyMax))
+        
     }
 }
 
