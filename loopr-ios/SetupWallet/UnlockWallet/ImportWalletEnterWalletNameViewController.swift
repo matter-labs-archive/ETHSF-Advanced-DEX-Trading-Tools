@@ -132,7 +132,7 @@ class ImportWalletEnterWalletNameViewController: UIViewController, UITextFieldDe
     }
     
     func importUsingMnemonic() {
-        ImportWalletUsingMnemonicDataManager.shared.complete(completion: {(appWallet, error) in
+        ImportWalletUsingMnemonicDataManager.shared.complete(completion: {(_, error) in
             if error == nil {
                 self.succeedAndExit()
             } else if error == .duplicatedAddress {

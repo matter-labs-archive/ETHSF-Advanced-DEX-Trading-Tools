@@ -22,7 +22,7 @@ class TabBarItemHighlightableContentView: TabBarItemBackgroundContentView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func highlightAnimation(animated: Bool, completion: (() -> ())?) {
+    override func highlightAnimation(animated: Bool, completion: (() -> Void)?) {
         UIView.beginAnimations("small", context: nil)
         UIView.setAnimationDuration(0.2)
         let transform = imageView.transform.scaledBy(x: 0.8, y: 0.8)
@@ -31,7 +31,7 @@ class TabBarItemHighlightableContentView: TabBarItemBackgroundContentView {
         completion?()
     }
     
-    override func dehighlightAnimation(animated: Bool, completion: (() -> ())?) {
+    override func dehighlightAnimation(animated: Bool, completion: (() -> Void)?) {
         UIView.beginAnimations("big", context: nil)
         UIView.setAnimationDuration(0.2)
         let transform = CGAffineTransform.identity

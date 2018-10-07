@@ -107,7 +107,7 @@ class FloatLabelTextField: UITextField {
         if let txt = text, !txt.isEmpty {
             var top = ceil(title.font.lineHeight + hintYPadding)
             top = min(top, maxTopInset())
-            r = UIEdgeInsetsInsetRect(r, UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0))
+            r = UIEdgeInsetsInsetRect(r, UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0))
         }
         return r.integral
     }
@@ -117,7 +117,7 @@ class FloatLabelTextField: UITextField {
         if let txt = text, !txt.isEmpty {
             var top = ceil(title.font.lineHeight + hintYPadding)
             top = min(top, maxTopInset())
-            r = UIEdgeInsetsInsetRect(r, UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0))
+            r = UIEdgeInsetsInsetRect(r, UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0))
         }
         return r.integral
     }

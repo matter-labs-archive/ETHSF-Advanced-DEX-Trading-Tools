@@ -21,7 +21,7 @@ class PushNotificationSettingManager {
 
     func registerForPushNotifications() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
-            (granted, error) in
+            (granted, _) in
             print("Permission granted: \(granted)")
             Answers.logCustomEvent(withName: "Push Notifications Permission v1",
                                    customAttributes: [

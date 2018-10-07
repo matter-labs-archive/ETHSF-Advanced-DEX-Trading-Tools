@@ -234,7 +234,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
     func setRangePrices(for prices: (minSell: Double?, maxBuy: Double?)) {
         let (minSell, maxBuy) = prices
         let price = type == .buy ? minSell : maxBuy
-        priceTextField.text = price != nil ? String(format:"%f", price!) : nil
+        priceTextField.text = price != nil ? String(format: "%f", price!) : nil
         if price == nil {
             let depthType = type == .buy ? "sell" : "buy"
             estimateValueInCurrencyLabel.isHidden = false

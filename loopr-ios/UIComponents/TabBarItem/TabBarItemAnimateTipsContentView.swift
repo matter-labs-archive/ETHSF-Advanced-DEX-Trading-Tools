@@ -12,17 +12,17 @@ class TabBarItemAnimateTipsContentView: TabBarItemBackgroundContentView {
     
     var duration = 0.3
     
-    override func selectAnimation(animated: Bool, completion: (() -> ())?) {
+    override func selectAnimation(animated: Bool, completion: (() -> Void)?) {
         notificationAnimation()
         completion?()
     }
     
-    override func reselectAnimation(animated: Bool, completion: (() -> ())?) {
+    override func reselectAnimation(animated: Bool, completion: (() -> Void)?) {
         notificationAnimation()
         completion?()
     }
     
-    override func badgeChangedAnimation(animated: Bool, completion: (() -> ())?) {
+    override func badgeChangedAnimation(animated: Bool, completion: (() -> Void)?) {
         super.badgeChangedAnimation(animated: animated, completion: nil)
         notificationAnimation()
     }

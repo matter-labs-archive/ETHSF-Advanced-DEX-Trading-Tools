@@ -184,7 +184,7 @@ class VerifyMnemonicViewController: UIViewController, MnemonicBackupModeCollecti
                 self.blurVisualEffectView.removeFromSuperview()
             })
             
-            GenerateWalletDataManager.shared.complete(completion: {(appWallet, error) in
+            GenerateWalletDataManager.shared.complete(completion: {(_, error) in
                 if error == nil {
                     if verified {
                         Answers.logSignUp(withMethod: QRCodeMethod.create.description + ".verified", success: true, customAttributes: nil)

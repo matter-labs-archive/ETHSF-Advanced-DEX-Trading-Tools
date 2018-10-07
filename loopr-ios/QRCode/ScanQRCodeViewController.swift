@@ -168,7 +168,7 @@ class ScanQRCodeViewController: UIViewController, AVCaptureMetadataOutputObjects
         }
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if scanning == "start" {
             timer.fire()
         } else {
@@ -333,7 +333,7 @@ class ScanQRCodeViewController: UIViewController, AVCaptureMetadataOutputObjects
     }
     
     // MARK: - UIImagePickerControllerDelegate Methods
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
         var stringValue: String?
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             if let features = detectQRCode(pickedImage), !features.isEmpty {

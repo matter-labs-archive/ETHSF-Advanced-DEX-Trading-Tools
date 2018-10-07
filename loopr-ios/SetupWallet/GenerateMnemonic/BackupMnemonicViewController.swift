@@ -168,7 +168,7 @@ class BackupMnemonicViewController: UIViewController {
                 self.blurVisualEffectView.removeFromSuperview()
             })
             
-            GenerateWalletDataManager.shared.complete(completion: {(appWallet, error) in
+            GenerateWalletDataManager.shared.complete(completion: {(_, error) in
                 if error == nil {
                     Answers.logSignUp(withMethod: QRCodeMethod.create.description + ".skip", success: true, customAttributes: nil)
                     self.dismissGenerateWallet()

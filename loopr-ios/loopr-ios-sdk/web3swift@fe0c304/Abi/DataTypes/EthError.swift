@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 enum EthError: Error {
     case typeCanNotBeEncoded
 }

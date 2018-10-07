@@ -208,7 +208,7 @@ class TickerLabel: UIView {
     }
     
     func removeLastCharacterLabel(_ animated: Bool) {
-        var label: TickerCharacterLabel? = nil
+        var label: TickerCharacterLabel?
         if textAlignment == .right {
             label = characterViews.first
         } else {

@@ -297,7 +297,7 @@ class AppWalletDataManager {
     func getAllBalanceFromRelayInBackgroundThread() {
         for wallet in AppWalletDataManager.shared.getWallets() {
             // Closure is in the background thread.
-            AppWalletDataManager.shared.getTotalCurrencyValue(address: wallet.address, getPrice: false, completionHandlerInBackgroundThread: { (totalCurrencyValue, error) in
+            AppWalletDataManager.shared.getTotalCurrencyValue(address: wallet.address, getPrice: false, completionHandlerInBackgroundThread: { (totalCurrencyValue, _) in
                 print("AppWalletDataManager getAllBalanceFromRelay \(totalCurrencyValue)")
                 wallet.totalCurrency = totalCurrencyValue
                 AppWalletDataManager.shared.updateAppWalletsInLocalStorage(newAppWallet: wallet)

@@ -274,7 +274,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         let valueComponents = queryArray[3].components(separatedBy: "&")
         var res = [String: String]()
-        valueComponents.forEach{
+        valueComponents.forEach {
             let a = $0.components(separatedBy: "=")
             res[a[0]] = a[1]
         }

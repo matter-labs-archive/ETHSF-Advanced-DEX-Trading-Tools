@@ -1634,5 +1634,5 @@ let mnemonicWords: [String] = [
     "total",
     "unseen",
     "weapon",
-    "weary",
+    "weary"
 ]

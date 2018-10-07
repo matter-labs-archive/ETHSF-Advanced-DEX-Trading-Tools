@@ -32,7 +32,7 @@ enum GlobalPicker {
     static let barTextColor = ThemeColorPicker.pickerWithColors(barTextColors)
     
     // navigation title attributes
-    static let titleAttributes = GlobalPicker.textColors.map { hexString -> [NSAttributedStringKey : NSObject] in
+    static let titleAttributes = GlobalPicker.textColors.map { hexString -> [NSAttributedStringKey: NSObject] in
         let shadow = NSShadow()
         shadow.shadowOffset = CGSize(width: 0, height: 0)
         return [
