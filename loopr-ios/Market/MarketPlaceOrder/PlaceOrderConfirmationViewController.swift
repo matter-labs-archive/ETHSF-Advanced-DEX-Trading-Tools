@@ -276,6 +276,8 @@ class PlaceOrderConfirmationViewController: UIViewController, UIScrollViewDelega
                     self.complete(nil, error!)
                     return
                 }
+                OrdersDatabase().saveOrder(order: OrderCDModel(hash: orderHash, price: self.price ?? "0"), completion: { (error) in
+                })
                 UserDefaults.standard.set(false, forKey: UserDefaultsKeys.cancelledAll.rawValue)
                 LoopringAPIRequest.notifyStatus(hash: hash, status: .accept, completionHandler: { (_, error) in
                     self.completion(orderHash, error)
@@ -424,6 +426,8 @@ extension PlaceOrderConfirmationViewController {
             if orderHash != nil && error == nil {
                 UserDefaults.standard.set(false, forKey: UserDefaultsKeys.cancelledAll.rawValue)
             }
+            OrdersDatabase().saveOrder(order: OrderCDModel(hash: orderHash ?? "", price: self.price ?? "0"), completion: { (_) in
+            })
             self.completion(orderHash, error)
         }
     }

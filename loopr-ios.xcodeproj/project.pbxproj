@@ -465,6 +465,8 @@
 		ACFEFEA220C3792200013921 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFEFEA120C3792200013921 /* CoreDataManager.swift */; };
 		C8BF959D202696A900343B9A /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BF959C202696A900343B9A /* MainTabController.swift */; };
 		D9524CB21C9A148B2F4D503B /* Pods_loopr_iosUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBFBD618D375438178B6033F /* Pods_loopr_iosUITests.framework */; };
+		E2261DE8216CE86C005F17E6 /* OrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2261DE7216CE86C005F17E6 /* OrderModel.swift */; };
+		E2261DEA216CFD29005F17E6 /* OrdersDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2261DE9216CFD29005F17E6 /* OrdersDatabase.swift */; };
 		EE817669636361AFF682A8F5 /* Pods_loopr_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 929BB32EF62C4BD6BC1DFC8F /* Pods_loopr_ios.framework */; };
 		FF9C7DDA208D55F8004687AD /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FF9C7DD9208D55F8004687AD /* Settings.bundle */; };
 		FF9C7DDC208D59EA004687AD /* SettingsBundleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9C7DDB208D59EA004687AD /* SettingsBundleHelper.swift */; };
@@ -987,6 +989,8 @@
 		C8BF959C202696A900343B9A /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
 		CBFBD618D375438178B6033F /* Pods_loopr_iosUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_loopr_iosUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB375D875A161ED45585D9CD /* Pods-loopr-ios.vivwallet.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-loopr-ios.vivwallet.xcconfig"; path = "Pods/Target Support Files/Pods-loopr-ios/Pods-loopr-ios.vivwallet.xcconfig"; sourceTree = "<group>"; };
+		E2261DE7216CE86C005F17E6 /* OrderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderModel.swift; sourceTree = "<group>"; };
+		E2261DE9216CFD29005F17E6 /* OrdersDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersDatabase.swift; sourceTree = "<group>"; };
 		EB11C1F4817BFD28E305586E /* Pods-loopr-iosUITests.vivwallet.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-loopr-iosUITests.vivwallet.xcconfig"; path = "Pods/Target Support Files/Pods-loopr-iosUITests/Pods-loopr-iosUITests.vivwallet.xcconfig"; sourceTree = "<group>"; };
 		F163A60E2D8A4C196D353B93 /* Pods-loopr-iosTests.vivwallet.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-loopr-iosTests.vivwallet.xcconfig"; path = "Pods/Target Support Files/Pods-loopr-iosTests/Pods-loopr-iosTests.vivwallet.xcconfig"; sourceTree = "<group>"; };
 		FF9C7DD9208D55F8004687AD /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -1587,6 +1591,7 @@
 		AC798E412022B93A0071D477 /* loopr-ios */ = {
 			isa = PBXGroup;
 			children = (
+				E2261DE6216CE837005F17E6 /* StopLossFeature */,
 				AC4D580D213CCEE600EE658F /* UP Wallet.entitlements */,
 				ACCC7EA120828D2E008E58BA /* loopr-ios-sdk */,
 				AC798E422022B93A0071D477 /* AppDelegate.swift */,
@@ -2271,6 +2276,15 @@
 			path = SetupWallet;
 			sourceTree = "<group>";
 		};
+		E2261DE6216CE837005F17E6 /* StopLossFeature */ = {
+			isa = PBXGroup;
+			children = (
+				E2261DE7216CE86C005F17E6 /* OrderModel.swift */,
+				E2261DE9216CFD29005F17E6 /* OrdersDatabase.swift */,
+			);
+			path = StopLossFeature;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2751,6 +2765,7 @@
 				ACB8AD89207F299700B478D6 /* UIViewController+BackButton.swift in Sources */,
 				AC7BC8592144E102004204D3 /* WalletCreateSuccessfullyPopViewController.swift in Sources */,
 				AC34A387215483F50083ADEC /* DisplayContractVersionViewController.swift in Sources */,
+				E2261DE8216CE86C005F17E6 /* OrderModel.swift in Sources */,
 				94AD1FE5208B910D00C443E6 /* Currency.swift in Sources */,
 				ACB911842026388700F14644 /* SettingViewController.swift in Sources */,
 				AC9FFF292126C05000957175 /* MarketChangeTokenViewController.swift in Sources */,
@@ -2955,6 +2970,7 @@
 				AC4F601120773E9D00F1D954 /* EthAccountCoordinator.swift in Sources */,
 				942FE781210D5A1C005C723D /* SendConfirmViewController.swift in Sources */,
 				942C49FA212911B0008A6B4F /* ConvertETHConfirmViewController.swift in Sources */,
+				E2261DEA216CFD29005F17E6 /* OrdersDatabase.swift in Sources */,
 				9413F69520B80E2600524D2D /* AmountStackView.swift in Sources */,
 				ACA677C92079D5A000D34A2F /* DisplayPrivateKeyViewController.swift in Sources */,
 				AC72AEEA204F038300E9D3B0 /* OrderTradeError.swift in Sources */,
@@ -3161,7 +3177,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = K46AVDG9WW;
+				DEVELOPMENT_TEAM = 8DB897QKJA;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3173,7 +3189,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DRELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = leaf.prod.app;
+				PRODUCT_BUNDLE_IDENTIFIER = leaf.matterinc.app;
 				PRODUCT_MODULE_NAME = loopr_ios;
 				PRODUCT_NAME = vivwallet;
 				PROVISIONING_PROFILE = "";
@@ -3298,7 +3314,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = K46AVDG9WW;
+				DEVELOPMENT_TEAM = 8DB897QKJA;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3310,7 +3326,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DRELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = leaf.prod.app;
+				PRODUCT_BUNDLE_IDENTIFIER = leaf.matterinc.app;
 				PRODUCT_MODULE_NAME = loopr_ios;
 				PRODUCT_NAME = Loopr;
 				PROVISIONING_PROFILE = "";
@@ -3493,7 +3509,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = K46AVDG9WW;
+				DEVELOPMENT_TEAM = 8DB897QKJA;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3505,7 +3521,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DDEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = leaf.prod.app;
+				PRODUCT_BUNDLE_IDENTIFIER = leaf.matterinc.app;
 				PRODUCT_MODULE_NAME = loopr_ios;
 				PRODUCT_NAME = "UP Wallet";
 				PROVISIONING_PROFILE = "";
@@ -3529,7 +3545,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = K46AVDG9WW;
+				DEVELOPMENT_TEAM = 8DB897QKJA;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3541,7 +3557,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DRELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = leaf.prod.app;
+				PRODUCT_BUNDLE_IDENTIFIER = leaf.matterinc.app;
 				PRODUCT_MODULE_NAME = loopr_ios;
 				PRODUCT_NAME = "UP Wallet";
 				PROVISIONING_PROFILE = "";
