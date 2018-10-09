@@ -44,6 +44,7 @@ class PlaceOrderConfirmationViewController: UIViewController, UIScrollViewDelega
     var tokenBView: TradeViewOnlyViewController = TradeViewOnlyViewController()
 
     var order: OriginalOrder?
+    var stopLoss: Double? = 0.0
     var price: String? = "0.0"
     var message: String = ""
     var verifyInfo: [String: Double]?
@@ -276,12 +277,15 @@ class PlaceOrderConfirmationViewController: UIViewController, UIScrollViewDelega
                     self.complete(nil, error!)
                     return
                 }
-                OrdersDatabase().saveOrder(order: OrderCDModel(hash: orderHash, price: self.price ?? "0"), completion: { (error) in
+                OrdersDatabase().saveOrder(order: OrderCDModel(hash: orderHash,
+                                                               stopLoss: String(self.stopLoss ?? 0)),
+                                           completion: { (_) in
+                    UserDefaults.standard.set(false, forKey: UserDefaultsKeys.cancelledAll.rawValue)
+                    LoopringAPIRequest.notifyStatus(hash: hash, status: .accept, completionHandler: { (_, error) in
+                        self.completion(orderHash, error)
+                    })
                 })
-                UserDefaults.standard.set(false, forKey: UserDefaultsKeys.cancelledAll.rawValue)
-                LoopringAPIRequest.notifyStatus(hash: hash, status: .accept, completionHandler: { (_, error) in
-                    self.completion(orderHash, error)
-                })
+                
             })
         }
     }
@@ -424,11 +428,13 @@ extension PlaceOrderConfirmationViewController {
     func submit() {
         PlaceOrderDataManager.shared._submitOrder(self.order!) { (orderHash, error) in
             if orderHash != nil && error == nil {
-                UserDefaults.standard.set(false, forKey: UserDefaultsKeys.cancelledAll.rawValue)
+ //               UserDefaults.standard.set(false, forKey: UserDefaultsKeys.cancelledAll.rawValue)
+                OrdersDatabase().saveOrder(order: OrderCDModel(hash: orderHash ?? "",
+                                                               stopLoss: String(self.stopLoss ?? 0)),
+                                           completion: { (_) in
+                                            self.completion(orderHash, error)
+                })
             }
-            OrdersDatabase().saveOrder(order: OrderCDModel(hash: orderHash ?? "", price: self.price ?? "0"), completion: { (_) in
-            })
-            self.completion(orderHash, error)
         }
     }
     

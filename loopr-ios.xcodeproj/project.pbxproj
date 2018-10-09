@@ -467,6 +467,7 @@
 		D9524CB21C9A148B2F4D503B /* Pods_loopr_iosUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBFBD618D375438178B6033F /* Pods_loopr_iosUITests.framework */; };
 		E2261DE8216CE86C005F17E6 /* OrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2261DE7216CE86C005F17E6 /* OrderModel.swift */; };
 		E2261DEA216CFD29005F17E6 /* OrdersDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2261DE9216CFD29005F17E6 /* OrdersDatabase.swift */; };
+		E2261DEC216D07F3005F17E6 /* OrdersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2261DEB216D07F2005F17E6 /* OrdersService.swift */; };
 		EE817669636361AFF682A8F5 /* Pods_loopr_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 929BB32EF62C4BD6BC1DFC8F /* Pods_loopr_ios.framework */; };
 		FF9C7DDA208D55F8004687AD /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FF9C7DD9208D55F8004687AD /* Settings.bundle */; };
 		FF9C7DDC208D59EA004687AD /* SettingsBundleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9C7DDB208D59EA004687AD /* SettingsBundleHelper.swift */; };
@@ -991,6 +992,7 @@
 		DB375D875A161ED45585D9CD /* Pods-loopr-ios.vivwallet.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-loopr-ios.vivwallet.xcconfig"; path = "Pods/Target Support Files/Pods-loopr-ios/Pods-loopr-ios.vivwallet.xcconfig"; sourceTree = "<group>"; };
 		E2261DE7216CE86C005F17E6 /* OrderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderModel.swift; sourceTree = "<group>"; };
 		E2261DE9216CFD29005F17E6 /* OrdersDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersDatabase.swift; sourceTree = "<group>"; };
+		E2261DEB216D07F2005F17E6 /* OrdersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersService.swift; sourceTree = "<group>"; };
 		EB11C1F4817BFD28E305586E /* Pods-loopr-iosUITests.vivwallet.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-loopr-iosUITests.vivwallet.xcconfig"; path = "Pods/Target Support Files/Pods-loopr-iosUITests/Pods-loopr-iosUITests.vivwallet.xcconfig"; sourceTree = "<group>"; };
 		F163A60E2D8A4C196D353B93 /* Pods-loopr-iosTests.vivwallet.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-loopr-iosTests.vivwallet.xcconfig"; path = "Pods/Target Support Files/Pods-loopr-iosTests/Pods-loopr-iosTests.vivwallet.xcconfig"; sourceTree = "<group>"; };
 		FF9C7DD9208D55F8004687AD /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -2281,6 +2283,7 @@
 			children = (
 				E2261DE7216CE86C005F17E6 /* OrderModel.swift */,
 				E2261DE9216CFD29005F17E6 /* OrdersDatabase.swift */,
+				E2261DEB216D07F2005F17E6 /* OrdersService.swift */,
 			);
 			path = StopLossFeature;
 			sourceTree = "<group>";
@@ -2754,6 +2757,7 @@
 				AC2ACA9E21030775009C77E7 /* TradeFAQPage.swift in Sources */,
 				AC4F601420773E9D00F1D954 /* EthError.swift in Sources */,
 				94BFF9D221073EE300A0BE8B /* SetGasViewController.swift in Sources */,
+				E2261DEC216D07F3005F17E6 /* OrdersService.swift in Sources */,
 				94678B2A210D902E00F550D3 /* SendResultViewController.swift in Sources */,
 				AC4142062038B66F0089861D /* AppWallet.swift in Sources */,
 				ACB97C7020715BC100775D4C /* MnemonicQuestion.swift in Sources */,

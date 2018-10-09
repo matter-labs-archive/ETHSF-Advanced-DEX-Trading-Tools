@@ -17,7 +17,7 @@ class OrdersDatabase {
         case cantSaveOrderInStorage
     }
     
-    lazy var container: NSPersistentContainer = NSPersistentContainer(name: "CoreDataModel")
+    lazy var container: NSPersistentContainer = NSPersistentContainer(name: "loopr_ios")
     private lazy var mainContext = self.container.viewContext
     
     init() {
@@ -54,7 +54,7 @@ class OrdersDatabase {
                 return
             }
             entity.orderHash = order.hash
-            entity.price = order.price
+            entity.stopLoss = order.stopLoss
             do {
                 try context.save()
                 DispatchQueue.main.async {
@@ -89,6 +89,68 @@ class OrdersDatabase {
             DispatchQueue.main.async {
                 completion(error)
             }
+        }
+    }
+    
+    public func deleteOrder(order: Order, completion: @escaping (Error?) -> Void) {
+        let requestOrder: NSFetchRequest<OrderCD> = OrderCD.fetchRequest()
+        requestOrder.predicate = NSPredicate(format: "hash = %@", order.originalOrder.hash)
+        do {
+            let results = try mainContext.fetch(requestOrder)
+            guard let result = results.first else {
+                DispatchQueue.main.async {
+                    completion(DataBaseError.noSuchOrderInStorage)
+                }
+                return
+            }
+            mainContext.delete(result)
+            try mainContext.save()
+            DispatchQueue.main.async {
+                completion(nil)
+            }
+        } catch {
+            DispatchQueue.main.async {
+                completion(error)
+            }
+        }
+    }
+    
+    public func getOrder(order: OrderCDModel) -> OrderCDModel? {
+        let requestOrder: NSFetchRequest<OrderCD> = OrderCD.fetchRequest()
+        requestOrder.predicate = NSPredicate(format: "orderHash = %@", order.hash)
+        do {
+            let results = try mainContext.fetch(requestOrder)
+            return results.map {
+                return OrderCDModel.fromCoreData(crModel: $0)
+                }.first
+        } catch {
+            return nil
+        }
+    }
+    
+    public func getOrder(order: Order) -> OrderCDModel? {
+        let requestOrder: NSFetchRequest<OrderCD> = OrderCD.fetchRequest()
+        requestOrder.predicate = NSPredicate(format: "orderHash = %@", order.originalOrder.hash)
+        do {
+            let results = try mainContext.fetch(requestOrder)
+            return results.map {
+                return OrderCDModel.fromCoreData(crModel: $0)
+                }.first
+        } catch {
+            return nil
+        }
+    }
+    
+    public func getOrder(hash: String) -> OrderCDModel? {
+        let requestOrder: NSFetchRequest<OrderCD> = OrderCD.fetchRequest()
+        requestOrder.predicate = NSPredicate(format: "orderHash = %@", hash)
+        do {
+            let results = try mainContext.fetch(requestOrder)
+            return results.map {
+                return OrderCDModel.fromCoreData(crModel: $0)
+                }.first
+        } catch {
+            return nil
         }
     }
 }

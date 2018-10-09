@@ -9,23 +9,28 @@
 import Foundation
 
 class OrderCDModel {
-    let price: String
+    let stopLoss: String
     let hash: String
     
     init(order: OrderCD) {
-        self.price = order.price ?? "0"
+        self.stopLoss = order.stopLoss ?? "0"
         self.hash = order.orderHash ?? ""
     }
     
     init(hash: String,
-         price: String) {
-        self.price = price
+         stopLoss: String) {
+        self.stopLoss = stopLoss
+        self.hash = hash
+    }
+    
+    init(hash: String) {
+        self.stopLoss = "0"
         self.hash = hash
     }
     
     static func fromCoreData(crModel: OrderCD) -> OrderCDModel {
         let model = OrderCDModel(hash: crModel.orderHash ?? "",
-                                 price: crModel.price ?? "0" )
+                                 stopLoss: crModel.stopLoss ?? "0" )
         return model
     }
 }

@@ -2,7 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="17G65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="OrderCD" representedClassName="OrderCD" syncable="YES" codeGenerationType="class">
         <attribute name="orderHash" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="price" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stopLoss" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Transactions" representedClassName="Transactions" syncable="YES" codeGenerationType="class">
         <attribute name="amount" optional="YES" attributeType="String" syncable="YES"/>

@@ -30,6 +30,7 @@
                 <outlet property="sellTipLabel" destination="Di1-jg-ePv" id="5VP-Ho-dQe"/>
                 <outlet property="sliderView" destination="Niq-X3-TVH" id="9Ps-eM-7cV"/>
                 <outlet property="sliderViewHeight" destination="NBM-0D-eBu" id="ka3-ka-hr0"/>
+                <outlet property="stopLossTextField" destination="iIj-04-1Ci" id="FsQ-bf-8r8"/>
                 <outlet property="tipLabel" destination="JUT-ee-RXX" id="bbu-hx-FBa"/>
                 <outlet property="tokenBButton" destination="cxj-Vc-B9z" id="8oy-cK-BBS"/>
                 <outlet property="tokenSButton" destination="eJV-rg-daP" id="eEE-Uq-o4B"/>

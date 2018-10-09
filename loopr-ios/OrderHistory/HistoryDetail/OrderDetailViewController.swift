@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NotificationBannerSwift
 
 class OrderDetailViewController: UIViewController, UIScrollViewDelegate {
     
@@ -25,6 +26,8 @@ class OrderDetailViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var idInfoButton: UIButton!
     @IBOutlet weak var dateTipLabel: UILabel!
     @IBOutlet weak var dateInfoLabel: UILabel!
+    @IBOutlet weak var stopLossLabel: UILabel!
+    @IBOutlet weak var StopLossInfoLabel: UILabel!
     
     @IBOutlet weak var seperatorA: UIView!
     @IBOutlet weak var seperatorB: UIView!
@@ -33,6 +36,7 @@ class OrderDetailViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var seperatorE: UIView!
     @IBOutlet weak var seperatorF: UIView!
     @IBOutlet weak var seperatorG: UIView!
+    @IBOutlet weak var separatorH: UIView!
     
     // Mask view
     var blurVisualEffectView = UIView(frame: .zero)
@@ -115,7 +119,14 @@ class OrderDetailViewController: UIViewController, UIScrollViewDelegate {
         dateInfoLabel.font = FontConfigManager.shared.getDigitalFont(size: 14)
         dateInfoLabel.theme_textColor = GlobalPicker.textColor
         
-        let seperators = [seperatorA, seperatorB, seperatorC, seperatorD, seperatorE, seperatorF, seperatorG]
+        stopLossLabel.font = FontConfigManager.shared.getCharactorFont(size: 14)
+        stopLossLabel.theme_textColor = GlobalPicker.textLightColor
+        stopLossLabel.text = "Stop Loss/Current price"
+        
+        StopLossInfoLabel.font = FontConfigManager.shared.getDigitalFont(size: 14)
+        StopLossInfoLabel.theme_textColor = GlobalPicker.textColor
+        
+        let seperators = [seperatorA, seperatorB, seperatorC, seperatorD, seperatorE, seperatorF, seperatorG, separatorH]
         seperators.forEach { $0?.theme_backgroundColor = ColorPicker.cardHighLightColor }
         
         blurVisualEffectView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
@@ -199,6 +210,7 @@ class OrderDetailViewController: UIViewController, UIScrollViewDelegate {
         setupLRCFee(order: order)
         setupOrderFilled(order: order)
         setupOrderDate(order: order)
+        setupStopLoss(order: order)
     }
     
     func setupLRCFee(order: Order) {
@@ -237,6 +249,37 @@ class OrderDetailViewController: UIViewController, UIScrollViewDelegate {
         let since = DateUtil.convertToDate(UInt(originOrder.validSince), format: "MM-dd HH:mm")
         let until = DateUtil.convertToDate(UInt(originOrder.validUntil), format: "MM-dd HH:mm")
         dateInfoLabel.text = "\(since) ~ \(until)"
+    }
+    
+    func setupStopLoss(order: Order) {
+        let orderCD = OrdersService().findEqualOrderInCD(order: order)
+        let stopLoss = orderCD?.stopLoss
+        
+        let market = MarketDataManager.shared.getMarket(byTradingPair: order.originalOrder.market)
+        if market == nil {
+            LoopringAPIRequest.getTicker(by: .coinmarketcap) { (markets, error) in
+                print("receive LoopringAPIRequest.getMarkets")
+                guard error == nil else {
+                    print("error=\(String(describing: error))")
+                    let notificationTitle = LocalizedString("No network", comment: "")
+                    let banner = NotificationBanner.generate(title: notificationTitle, style: .info)
+                    banner.duration = 2.0
+                    banner.show()
+                    return
+                }
+                // We don't any filter in the API requests. So no need to filter the response.
+                MarketDataManager.shared.setMarkets(newMarkets: markets)
+                let market = MarketDataManager.shared.getMarket(byTradingPair: order.originalOrder.market)
+                let balance = market?.balance.withCommas(6)
+                DispatchQueue.main.async {
+                    self.StopLossInfoLabel.text = "\(stopLoss ?? "0")/\(balance ?? "0")"
+                }
+            }
+        }
+        let balance = market?.balance.withCommas(6)
+        DispatchQueue.main.async {
+            self.StopLossInfoLabel.text = "\(stopLoss ?? "0")/\(balance ?? "0")"
+        }
     }
     
     @objc func pressedIdButton() {
