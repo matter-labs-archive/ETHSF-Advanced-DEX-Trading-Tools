@@ -61,17 +61,27 @@ class OrderTableViewCell: UITableViewCell {
         }
     }
     
-    func update() {
+    func update(isTriggered: Bool = false) {
         guard let order = self.order else { return }
 
         setupTradingPairlabel(order: order)
         setupPriceLabel(order: order)
+        
+        setupStopLoss(isTriggered: isTriggered)
+        
         setupOrderTypeLabel(order: order)
         
         setupVolumeLabel(order: order)
         
         setupCancelButton(order: order)
         setupOrderDate(order: order)
+        
+    }
+    
+    func setupStopLoss(isTriggered: Bool) {
+        if isTriggered {
+            self.priceLabel.textColor = UIColor.red
+        }
     }
     
     func setupCancelButton(order: Order) {
@@ -175,5 +185,16 @@ class OrderTableViewCell: UITableViewCell {
     
     class func getHeight() -> CGFloat {
         return 68+1
+    }
+    
+    override func prepareForReuse() {
+        tradingPairLabel.text = nil
+        orderTypeLabel.text = nil
+        priceLabel.text = nil
+        displayLabel.text = nil
+        volumeLabel.text = nil
+        dateLabel.text = nil
+        
+        priceLabel.theme_textColor = GlobalPicker.textLightColor
     }
 }

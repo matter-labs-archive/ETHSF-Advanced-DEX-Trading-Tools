@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NotificationBannerSwift
 
 class OrderDetailViewController: UIViewController, UIScrollViewDelegate {
     
@@ -25,6 +26,8 @@ class OrderDetailViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var idInfoButton: UIButton!
     @IBOutlet weak var dateTipLabel: UILabel!
     @IBOutlet weak var dateInfoLabel: UILabel!
+    @IBOutlet weak var stopLossLabel: UILabel!
+    @IBOutlet weak var StopLossInfoLabel: UILabel!
     
     @IBOutlet weak var seperatorA: UIView!
     @IBOutlet weak var seperatorB: UIView!
@@ -33,6 +36,7 @@ class OrderDetailViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var seperatorE: UIView!
     @IBOutlet weak var seperatorF: UIView!
     @IBOutlet weak var seperatorG: UIView!
+    @IBOutlet weak var separatorH: UIView!
     
     // Mask view
     var blurVisualEffectView = UIView(frame: .zero)
@@ -115,7 +119,14 @@ class OrderDetailViewController: UIViewController, UIScrollViewDelegate {
         dateInfoLabel.font = FontConfigManager.shared.getDigitalFont(size: 14)
         dateInfoLabel.theme_textColor = GlobalPicker.textColor
         
-        let seperators = [seperatorA, seperatorB, seperatorC, seperatorD, seperatorE, seperatorF, seperatorG]
+        stopLossLabel.font = FontConfigManager.shared.getCharactorFont(size: 14)
+        stopLossLabel.theme_textColor = GlobalPicker.textLightColor
+        stopLossLabel.text = "Stop Loss/Current price"
+        
+        StopLossInfoLabel.font = FontConfigManager.shared.getDigitalFont(size: 14)
+        StopLossInfoLabel.theme_textColor = GlobalPicker.textColor
+        
+        let seperators = [seperatorA, seperatorB, seperatorC, seperatorD, seperatorE, seperatorF, seperatorG, separatorH]
         seperators.forEach { $0?.theme_backgroundColor = ColorPicker.cardHighLightColor }
         
         blurVisualEffectView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
@@ -199,6 +210,7 @@ class OrderDetailViewController: UIViewController, UIScrollViewDelegate {
         setupLRCFee(order: order)
         setupOrderFilled(order: order)
         setupOrderDate(order: order)
+        setupStopLoss(order: order)
     }
     
     func setupLRCFee(order: Order) {
@@ -237,6 +249,18 @@ class OrderDetailViewController: UIViewController, UIScrollViewDelegate {
         let since = DateUtil.convertToDate(UInt(originOrder.validSince), format: "MM-dd HH:mm")
         let until = DateUtil.convertToDate(UInt(originOrder.validUntil), format: "MM-dd HH:mm")
         dateInfoLabel.text = "\(since) ~ \(until)"
+    }
+    
+    func setupStopLoss(order: Order) {
+        guard let orderCD = OrdersService().findEqualOrderInCD(order: order) else {return}
+        let stopLoss = orderCD.stopLoss
+        
+        OrdersService().balanceForOrder(order: order, orderCD: orderCD) { (balance)  in
+            DispatchQueue.main.async {
+                self.StopLossInfoLabel.text = "\(stopLoss )/\(balance ?? "0")"
+            }
+        }
+        
     }
     
     @objc func pressedIdButton() {

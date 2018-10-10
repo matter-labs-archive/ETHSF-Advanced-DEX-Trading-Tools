@@ -67,6 +67,10 @@ class OrderHistoryViewController: UIViewController, UITableViewDelegate, UITable
         refreshControl.theme_tintColor = GlobalPicker.textColor
         refreshControl.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
 
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         getOrderHistoryFromRelay()
     }
 
@@ -77,20 +81,34 @@ class OrderHistoryViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func getOrderHistoryFromRelay() {
-        OrderDataManager.shared.getOrdersFromServer(pageIndex: pageIndex, completionHandler: { _ in
+        OrderDataManager.shared.getOrdersFromServer(pageIndex: pageIndex, completionHandler: { (error) in
+            guard error == nil else {return}
+            
+            if self.isLaunching {
+                self.isLaunching = false
+            }
+            self.orders = OrderDataManager.shared.getOrders(type: self.type)
+            if self.previousOrderCount != self.orders.count {
+                self.hasMoreData = true
+            } else {
+                self.hasMoreData = false
+            }
+            let ordersCD = OrdersService().getCurrentOrdersFromCD()
             DispatchQueue.main.async {
-                if self.isLaunching {
-                    self.isLaunching = false
-                }
-                self.orders = OrderDataManager.shared.getOrders(type: self.type)
-                if self.previousOrderCount != self.orders.count {
-                    self.hasMoreData = true
-                } else {
-                    self.hasMoreData = false
-                }
-                self.previousOrderCount = self.orders.count
                 self.historyTableView.reloadData()
                 self.refreshControl.endRefreshing()
+            }
+            for order in self.orders {
+                for orderCD in ordersCD where orderCD.hash == order.originalOrder.hash {
+                    OrdersService().balanceForOrder(order: order, orderCD: orderCD, completion: { (balance) in
+                        order.stopLossTriggered = (Double(balance ?? "0") ?? 0 <= Double(orderCD.stopLoss) ?? 0) && order.orderStatus == .opened
+                        self.previousOrderCount = self.orders.count
+                        DispatchQueue.main.async {
+                            self.historyTableView.reloadData()
+                            self.refreshControl.endRefreshing()
+                        }
+                    })
+                }
             }
         })
     }
@@ -252,7 +270,7 @@ class OrderHistoryViewController: UIViewController, UITableViewDelegate, UITable
                 }))
                 self.present(alert, animated: true, completion: nil)
             }
-            cell?.update()
+            cell?.update(isTriggered: order.stopLossTriggered)
             
             // Pagination
             if hasMoreData && indexPath.row == orders.count - 1 {

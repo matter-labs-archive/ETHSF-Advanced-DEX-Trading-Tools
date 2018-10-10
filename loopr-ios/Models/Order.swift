@@ -10,6 +10,7 @@ import Foundation
 
 class Order: Equatable {
 
+    var stopLossTriggered: Bool = false
     let originalOrder: OriginalOrder
     let orderStatus: OrderStatus
     let dealtAmountB: Double

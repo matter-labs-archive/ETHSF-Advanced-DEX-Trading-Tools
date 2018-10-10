@@ -16,6 +16,16 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         case open = 42
         case closed = 0
     }
+    
+    enum slidersTags: Int {
+        case amount = 0
+    }
+    
+    enum textFieldsTags: Int {
+        case price = 0
+        case amount = 1
+        case stopLoss = 2
+    }
 
     var market: Market!
     
@@ -52,6 +62,9 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
     // Scroll view
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var scrollViewButtonLayoutConstraint: NSLayoutConstraint!
+    
+    // Stop Loss
+    @IBOutlet weak var stopLossTextField: UITextField!
     
     var blurVisualEffectView = UIView(frame: .zero)
     
@@ -108,7 +121,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
 
         // First row: TokenS
         priceTextField.delegate = self
-        priceTextField.tag = 0
+        priceTextField.tag = textFieldsTags.price.rawValue
         priceTextField.inputView = UIView(frame: .zero)
         priceTextField.font = FontConfigManager.shared.getDigitalFont()
         priceTextField.theme_tintColor = GlobalPicker.contrastTextColor
@@ -126,7 +139,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
 
         // Second row: TokenB
         amountTextField.delegate = self
-        amountTextField.tag = 1
+        amountTextField.tag = textFieldsTags.amount.rawValue
         amountTextField.inputView = UIView(frame: .zero)
         amountTextField.font = FontConfigManager.shared.getDigitalFont()
         amountTextField.theme_tintColor = GlobalPicker.contrastTextColor
@@ -137,12 +150,24 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         
         // Slider
         let screenWidth = UIScreen.main.bounds.width
+        stepSlider.tag = slidersTags.amount.rawValue
         stepSlider.frame = CGRect(x: 15, y: sliderView.frame.minY, width: screenWidth-15*4, height: 20)
         stepSlider.delegate = self
         stepSlider.maxCount = 4
         stepSlider.setIndex(0, animated: false)
         stepSlider.labels = ["0%", "25%", "50%", "75%", "100%"]
         containerView.addSubview(stepSlider)
+        
+        // Stop Loss
+        stopLossTextField.delegate = self
+        amountTextField.tag = textFieldsTags.stopLoss.rawValue
+        amountTextField.inputView = UIView(frame: .zero)
+        amountTextField.font = FontConfigManager.shared.getDigitalFont()
+        amountTextField.theme_tintColor = GlobalPicker.contrastTextColor
+        amountTextField.placeholder = LocalizedString("", comment: "")
+        amountTextField.setLeftPaddingPoints(textFieldLeftPadding)
+        amountTextField.setRightPaddingPoints(72)
+        amountTextField.contentMode = UIViewContentMode.bottom
         
         // Buttons
         hourButton.round(corners: [.topLeft, .bottomLeft], radius: 8)
@@ -248,6 +273,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         print("scrollViewTapped")
         priceTextField.resignFirstResponder()
         amountTextField.resignFirstResponder()
+        stopLossTextField.resignFirstResponder()
         hideNumericKeyboard()
     }
     
@@ -382,6 +408,11 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         PlaceOrderDataManager.shared.completeOrder(&order)
         return order
     }
+    
+    func fixStopLoss() -> Double {
+        let stopLoss: Double = Double(stopLossTextField.text ?? "0") ?? 0.0
+        return stopLoss
+    }
 
     @IBAction func pressedPlaceOrderButton(_ sender: Any) {
         print("pressedPlaceOrderButton")
@@ -413,6 +444,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         if let order = constructOrder() {
             let viewController = PlaceOrderConfirmationViewController()
             viewController.order = order
+            viewController.stopLoss = fixStopLoss()
             viewController.price = priceTextField.text
             
             // viewController.transitioningDelegate = self

@@ -13,6 +13,7 @@ class OrderNoDataTableViewCell: UITableViewCell {
     @IBOutlet weak var noDataImageView: UIImageView!
     @IBOutlet weak var noDataLabel: UILabel!
     
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -79,6 +79,9 @@ class MarketDataManager {
         for case let market in self.markets where market.description.lowercased() == tradingPair.lowercased() {
             return market
         }
+        for case let market in self.markets where market.description == tradingPair {
+            return market
+        }
         return nil
     }
     
