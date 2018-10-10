@@ -125,13 +125,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if url.host == nil {
             return true
         }
+        let viewController = MainTabController()
         if let parsed = parseDeepLink(url: url) {
             if parsed.type == .p2pOrder {
-                TradeDataManager.shared.handleResult(of: parsed.value)
-                let vc = TradeConfirmationViewController()
-                vc.view.theme_backgroundColor = ColorPicker.backgroundColor
-                vc.order = TradeDataManager.shared.orders[1]
-                window?.rootViewController = vc
+                if let navigationController = viewController.viewController1 as? WalletNavigationViewController {
+                    TradeDataManager.shared.handleResult(of: parsed.value, completion: {
+                        let vc = TradeConfirmationViewController()
+                        vc.view.theme_backgroundColor = ColorPicker.backgroundColor
+                        vc.order = TradeDataManager.shared.orders[1]
+                        vc.hidesBottomBarWhenPushed = true
+                        navigationController.pushViewController(vc, animated: true)
+                        self.window?.rootViewController = viewController
+                    })
+
+                }
             }
         } else {
             let queryArray = url.absoluteString.components(separatedBy: "/")

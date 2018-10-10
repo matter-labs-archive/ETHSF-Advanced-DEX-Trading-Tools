@@ -212,15 +212,28 @@ class TradeReviewViewController: UIViewController {
                          TradeDataManager.qrcodeAuth: order.authPrivateKey,
                          TradeDataManager.sellRatio: TradeDataManager.shared.sellRatio]
         do {
-            let data = try body.rawData(options: .prettyPrinted)
-            let ciContext = CIContext()
-            if let filter = CIFilter(name: "CIQRCodeGenerator") {
-                filter.setValue(data, forKey: "inputMessage")
-                let transform = CGAffineTransform(scaleX: 10, y: 10)
-                let upScaledImage = filter.outputImage?.transformed(by: transform)
-                qrcodeImageCIImage = upScaledImage!
-                let cgImage = ciContext.createCGImage(upScaledImage!, from: upScaledImage!.extent)
-                qrcodeImage = UIImage(cgImage: cgImage!)
+            if TradeDataManager.qrcodeType == "P2P" {
+                guard let data = "loopr-ios://p2p/Hash=\(order.hash)&Ratio=\(TradeDataManager.shared.sellRatio)&Auth=\(order.authPrivateKey)".data(using: .utf8) else { return }
+                let ciContext = CIContext()
+                if let filter = CIFilter(name: "CIQRCodeGenerator") {
+                    filter.setValue(data, forKey: "inputMessage")
+                    let transform = CGAffineTransform(scaleX: 10, y: 10)
+                    let upScaledImage = filter.outputImage?.transformed(by: transform)
+                    qrcodeImageCIImage = upScaledImage!
+                    let cgImage = ciContext.createCGImage(upScaledImage!, from: upScaledImage!.extent)
+                    qrcodeImage = UIImage(cgImage: cgImage!)
+                }
+            } else {
+                let data = try body.rawData(options: .prettyPrinted)
+                let ciContext = CIContext()
+                if let filter = CIFilter(name: "CIQRCodeGenerator") {
+                    filter.setValue(data, forKey: "inputMessage")
+                    let transform = CGAffineTransform(scaleX: 10, y: 10)
+                    let upScaledImage = filter.outputImage?.transformed(by: transform)
+                    qrcodeImageCIImage = upScaledImage!
+                    let cgImage = ciContext.createCGImage(upScaledImage!, from: upScaledImage!.extent)
+                    qrcodeImage = UIImage(cgImage: cgImage!)
+                }
             }
         } catch let error as NSError {
             print ("Error: \(error.domain)")
