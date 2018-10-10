@@ -97,7 +97,6 @@ class LoopringAPIRequest {
         Request.send(body: body, url: RelayAPIConfiguration.rpcURL) { data, _, error in
             guard let data = data, error == nil else {
                 print("error=\(String(describing: error))")
-                completionHandler(nil, error)
                 return
             }
             let json = JSON(data)
