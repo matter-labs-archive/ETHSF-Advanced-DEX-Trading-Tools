@@ -126,6 +126,25 @@ class TradeDataManager {
             self.makerPrivateKey = makerPrivateKey
         }
     }
+    
+    func handleResult(of scanning: JSON, completion: @escaping () -> Void) {
+        self.makerHash = scanning[TradeDataManager.qrcodeHash].stringValue
+        let makerPrivateKey = scanning[TradeDataManager.qrcodeAuth].stringValue
+        self.sellRatio = scanning[TradeDataManager.sellRatio].doubleValue
+        if let hash = self.makerHash {
+            self.getOrder(by: hash) { (order) in
+                if let maker = order {
+                    let taker = self.constructTaker(from: maker)
+                    self.isTaker = true
+                    self.orders = []
+                    self.orders.insert(maker, at: 0)
+                    self.orders.insert(taker, at: 1)
+                    self.makerPrivateKey = makerPrivateKey
+                    completion()
+                }
+            }
+        }
+    }
 
     func getOrder(by hash: String) -> OriginalOrder? {
         var result: OriginalOrder?
@@ -139,6 +158,17 @@ class TradeDataManager {
         }
         _ = semaphore.wait(timeout: .distantFuture)
         return result
+    }
+    
+    func getOrder(by hash: String, completion: @escaping (OriginalOrder?) -> Void) {
+        LoopringAPIRequest.getOrderByHash(orderHash: hash) { order, error in
+            guard error == nil && order != nil else {
+                return
+            }
+            DispatchQueue.main.async {
+                completion(order?.originalOrder)
+            }
+        }
     }
 
     func constructTaker(from maker: OriginalOrder) -> OriginalOrder {
