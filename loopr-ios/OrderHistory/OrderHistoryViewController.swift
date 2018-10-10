@@ -94,19 +94,21 @@ class OrderHistoryViewController: UIViewController, UITableViewDelegate, UITable
                 self.hasMoreData = false
             }
             let ordersCD = OrdersService().getCurrentOrdersFromCD()
-            for order in self.orders {
-                var foundOrder = false
-                for orderCD in ordersCD where orderCD.hash == order.originalOrder.hash {
-                    foundOrder = true
-                }
-                if foundOrder {
-                    order.stopLossTriggered = true
-                }
-            }
             DispatchQueue.main.async {
-                self.previousOrderCount = self.orders.count
                 self.historyTableView.reloadData()
                 self.refreshControl.endRefreshing()
+            }
+            for order in self.orders {
+                for orderCD in ordersCD where orderCD.hash == order.originalOrder.hash {
+                    OrdersService().balanceForOrder(order: order, orderCD: orderCD, completion: { (balance) in
+                        order.stopLossTriggered = (Double(balance ?? "0") ?? 0 <= Double(orderCD.stopLoss) ?? 0) && order.orderStatus == .opened
+                        self.previousOrderCount = self.orders.count
+                        DispatchQueue.main.async {
+                            self.historyTableView.reloadData()
+                            self.refreshControl.endRefreshing()
+                        }
+                    })
+                }
             }
         })
     }

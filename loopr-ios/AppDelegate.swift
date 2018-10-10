@@ -58,6 +58,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 MarketDataManager.shared.setMarkets(newMarkets: markets)
             }
         }
+        
+        getOrdersAndShowStopLossed()
 
         PartnerDataManager.shared.createPartner()
         PartnerDataManager.shared.activatePartner()
@@ -93,6 +95,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // PushNotificationDeviceDataManager.shared.testAPI()
 
         return true
+    }
+    
+    func getOrdersAndShowStopLossed() {
+        OrderDataManager.shared.getOrdersFromServer(pageIndex: 0, completionHandler: { (error) in
+            
+            var numberToShow = 0
+            
+            guard error == nil else {return}
+            
+            let orders = OrderDataManager.shared.getOrders(type: OrderHistorySwipeType.open)
+            let ordersCD = OrdersService().getCurrentOrdersFromCD()
+            for order in orders {
+                for orderCD in ordersCD where orderCD.hash == order.originalOrder.hash {
+                    OrdersService().balanceForOrder(order: order, orderCD: orderCD, completion: { (balance) in
+                        order.stopLossTriggered = (Double(balance ?? "0") ?? 0 <= Double(orderCD.stopLoss) ?? 0) && order.orderStatus == .opened
+                        DispatchQueue.main.async {
+                            let banner = NotificationBanner.generate(title: "New stop lossed order. Look at orders", style: .danger)
+                            banner.duration = 2
+                            banner.show()
+                        }
+                    })
+                }
+            }
+        })
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {

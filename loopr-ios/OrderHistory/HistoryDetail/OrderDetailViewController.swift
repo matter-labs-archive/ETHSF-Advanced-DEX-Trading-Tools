@@ -252,34 +252,15 @@ class OrderDetailViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func setupStopLoss(order: Order) {
-        let orderCD = OrdersService().findEqualOrderInCD(order: order)
-        let stopLoss = orderCD?.stopLoss
+        guard let orderCD = OrdersService().findEqualOrderInCD(order: order) else {return}
+        let stopLoss = orderCD.stopLoss
         
-        let market = MarketDataManager.shared.getMarket(byTradingPair: order.originalOrder.market)
-        if market == nil {
-            LoopringAPIRequest.getTicker(by: .coinmarketcap) { (markets, error) in
-                print("receive LoopringAPIRequest.getMarkets")
-                guard error == nil else {
-                    print("error=\(String(describing: error))")
-                    let notificationTitle = LocalizedString("No network", comment: "")
-                    let banner = NotificationBanner.generate(title: notificationTitle, style: .info)
-                    banner.duration = 2.0
-                    banner.show()
-                    return
-                }
-                // We don't any filter in the API requests. So no need to filter the response.
-                MarketDataManager.shared.setMarkets(newMarkets: markets)
-                let market = MarketDataManager.shared.getMarket(byTradingPair: order.originalOrder.market)
-                let balance = market?.balance.withCommas(6)
-                DispatchQueue.main.async {
-                    self.StopLossInfoLabel.text = "\(stopLoss ?? "0")/\(balance ?? "0")"
-                }
+        OrdersService().balanceForOrder(order: order, orderCD: orderCD) { (balance)  in
+            DispatchQueue.main.async {
+                self.StopLossInfoLabel.text = "\(stopLoss )/\(balance ?? "0")"
             }
         }
-        let balance = market?.balance.withCommas(6)
-        DispatchQueue.main.async {
-            self.StopLossInfoLabel.text = "\(stopLoss ?? "0")/\(balance ?? "0")"
-        }
+        
     }
     
     @objc func pressedIdButton() {
