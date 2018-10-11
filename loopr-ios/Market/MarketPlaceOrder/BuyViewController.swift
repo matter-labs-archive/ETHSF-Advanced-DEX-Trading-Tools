@@ -26,7 +26,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         case amount = 1
         case stopLoss = 2
     }
-
+    
     var market: Market!
     
     // container
@@ -38,7 +38,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
     @IBOutlet weak var priceTokenLabel: UILabel!
     @IBOutlet weak var estimateValueInCurrencyLabel: UILabel!
     @IBOutlet weak var sellTipLabel: UILabel!
-
+    
     // TokenB
     @IBOutlet weak var tokenBButton: UIButton!
     @IBOutlet weak var amountTextField: UITextField!
@@ -70,7 +70,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
     
     // Drag down to close a present view controller.
     var dismissInteractor: MiniToLargeViewInteractive!
-
+    
     // Numeric keyboard
     var isNumericKeyboardShow: Bool = false
     var numericKeyboardView: DefaultNumericKeyboard!
@@ -105,20 +105,20 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         setBackButton()
         view.theme_backgroundColor = ColorPicker.backgroundColor
         containerView.theme_backgroundColor = ColorPicker.cardBackgroundColor
-
+        
         buyTipLabel.setTitleDigitFont()
         buyTipLabel.text = LocalizedString("Amount", comment: "")
         amountTokenLabel.setTitleDigitFont()
         amountTokenLabel.text = PlaceOrderDataManager.shared.tokenA.symbol
         tipLabel.setSubTitleCharFont()
-
+        
         let textFieldLeftPadding = buyTipLabel.text!.textWidth(font: FontConfigManager.shared.getDigitalFont()) + 16
-
+        
         // First row: TokenS
         priceTextField.delegate = self
         priceTextField.tag = textFieldsTags.price.rawValue
@@ -136,7 +136,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         priceTokenLabel.text = PlaceOrderDataManager.shared.tokenB.symbol
         estimateValueInCurrencyLabel.text = ""
         estimateValueInCurrencyLabel.setSubTitleCharFont()
-
+        
         // Second row: TokenB
         amountTextField.delegate = self
         amountTextField.tag = textFieldsTags.amount.rawValue
@@ -160,14 +160,14 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         
         // Stop Loss
         stopLossTextField.delegate = self
-        amountTextField.tag = textFieldsTags.stopLoss.rawValue
-        amountTextField.inputView = UIView(frame: .zero)
-        amountTextField.font = FontConfigManager.shared.getDigitalFont()
-        amountTextField.theme_tintColor = GlobalPicker.contrastTextColor
-        amountTextField.placeholder = LocalizedString("", comment: "")
-        amountTextField.setLeftPaddingPoints(textFieldLeftPadding)
-        amountTextField.setRightPaddingPoints(72)
-        amountTextField.contentMode = UIViewContentMode.bottom
+        stopLossTextField.tag = textFieldsTags.stopLoss.rawValue
+        stopLossTextField.inputView = UIView(frame: .zero)
+        stopLossTextField.font = FontConfigManager.shared.getDigitalFont()
+        stopLossTextField.theme_tintColor = GlobalPicker.contrastTextColor
+        stopLossTextField.placeholder = LocalizedString("", comment: "")
+        stopLossTextField.setLeftPaddingPoints(textFieldLeftPadding)
+        stopLossTextField.setRightPaddingPoints(72)
+        stopLossTextField.contentMode = UIViewContentMode.bottom
         
         // Buttons
         hourButton.round(corners: [.topLeft, .bottomLeft], radius: 8)
@@ -202,7 +202,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         
         // TODO: This cause wired animation.
         scrollView.delaysContentTouches = false
-
+        
         self.scrollViewButtonLayoutConstraint.constant = 0
         
         blurVisualEffectView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
@@ -215,7 +215,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
             priceTextField.text = initialPrice.trailingZero()
         }
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -281,7 +281,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         print("pressedUpdatePriceButton")
         presentMarketDetailDepthModalViewController()
     }
-
+    
     @IBAction func pressedUpdateAmountButton(_ sender: Any) {
         print("pressedUpdateAmountButton")
         presentMarketDetailDepthModalViewController()
@@ -308,7 +308,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
             
         })
     }
-
+    
     @IBAction func pressedExpiresButton(_ sender: UIButton) {
         let dict: [Int: Calendar.Component] = [0: .hour, 1: .day, 2: .month]
         for (index, button) in buttons.enumerated() {
@@ -351,10 +351,10 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
             message = "\(title) \(asset.display) \(tokenS)"
             amountTextField.text = (asset.balance * value).withCommas(length)
             print((asset.balance * value).withCommas(length))
-//            // Only validate when balance is larger than 0.
-//            if asset.balance > 0 {
-//                _ = validate()
-//            }
+            //            // Only validate when balance is larger than 0.
+            //            if asset.balance > 0 {
+            //                _ = validate()
+            //            }
         } else {
             message = "\(title) 0.0 \(tokenS)"
             amountTextField.text = "0.0"
@@ -363,7 +363,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         tipLabel.textColor = .text1
         activeTextFieldTag = amountTextField.tag
     }
-
+    
     // To avoid gesture conflicts in swiping to back and UISlider
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if touch.view != nil && touch.view!.isKind(of: StepSlider.self) {
@@ -371,7 +371,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         }
         return true
     }
-
+    
     func getBalance() -> Double? {
         if let asset = CurrentAppWalletDataManager.shared.getAsset(symbol: tokenS) {
             return asset.balance
@@ -398,7 +398,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
             amountBuy = self.orderAmount
             amountSell = Double(amountTextField.text!)!
         }
-
+        
         lrcFee = getLrcFee(amountSell, tokenSell)
         let delegate = RelayAPIConfiguration.delegateAddress
         let address = CurrentAppWalletDataManager.shared.getCurrentAppWallet()!.address
@@ -413,13 +413,14 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         let stopLoss: Double = Double(stopLossTextField.text ?? "0") ?? 0.0
         return stopLoss
     }
-
+    
     @IBAction func pressedPlaceOrderButton(_ sender: Any) {
         print("pressedPlaceOrderButton")
         _ = validate()
         hideNumericKeyboard()
         priceTextField.resignFirstResponder()
         amountTextField.resignFirstResponder()
+        stopLossTextField.resignFirstResponder()
         
         let isPriceValid = validateTokenPrice()
         let isAmountValid = validateAmount()
@@ -439,7 +440,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
             tipLabel.shake()
         }
     }
-
+    
     func pushController() {
         if let order = constructOrder() {
             let viewController = PlaceOrderConfirmationViewController()
@@ -501,7 +502,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
             return false
         }
     }
-   
+    
     func setupLabels() {
         if let balance = getBalance() {
             let title = LocalizedString("Available Balance", comment: "")
@@ -538,7 +539,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
             return false
         }
     }
-
+    
     func validate() -> Bool {
         var isValid = false
         if activeTextFieldTag == priceTextField.tag {
@@ -560,7 +561,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         }
         return isValid
     }
-
+    
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         print("textFieldShouldBeginEditing")
         activeTextFieldTag = textField.tag
@@ -574,6 +575,8 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
             return priceTextField
         } else if activeTextFieldTag == amountTextField.tag {
             return amountTextField
+        } else if activeTextFieldTag == stopLossTextField.tag {
+            return stopLossTextField
         } else {
             return nil
         }
@@ -583,7 +586,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         if !isNumericKeyboardShow {
             let width = self.view.frame.width
             let height = self.view.frame.height
-
+            
             scrollViewButtonLayoutConstraint.constant = DefaultNumericKeyboard.height
             
             numericKeyboardView = DefaultNumericKeyboard(frame: CGRect(x: 0, y: height, width: width, height: DefaultNumericKeyboard.height))
@@ -658,7 +661,7 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
         }
         _ = validate()
     }
-
+    
     func numericKeyboard(_ numericKeyboard: NumericKeyboard, itemLongPressed item: NumericKeyboardItem, atPosition position: Position) {
         print("Long pressed keyboard: (\(position.row), \(position.column))")
         
@@ -711,19 +714,19 @@ class BuyViewController: UIViewController, UITextFieldDelegate, UIScrollViewDele
 }
 
 extension BuyViewController: UIViewControllerTransitioningDelegate {
-
+    
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         let animator = MiniToLargeViewAnimator()
         animator.initialY = 0
         animator.transitionType = .Dismiss
         return animator
     }
-
+    
     func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         // guard !disableInteractivePlayerTransitioning else { return nil }
         return dismissInteractor
     }
-
+    
 }
 
 extension BuyViewController: MarketDetailDepthModalViewControllerDelegate {
@@ -735,7 +738,7 @@ extension BuyViewController: MarketDetailDepthModalViewControllerDelegate {
             self.blurVisualEffectView.removeFromSuperview()
         })
     }
-
+    
     func dismissWithSelectedDepth(amount: String, price: String) {
         priceTextField.text = price.trailingZero()
         let token = PlaceOrderDataManager.shared.tokenB.symbol

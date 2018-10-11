@@ -175,7 +175,7 @@
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                 </stackView>
-                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Stop Loss" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iIj-04-1Ci">
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iIj-04-1Ci">
                                     <rect key="frame" x="16" y="294" width="350" height="50"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="50" id="Q0X-pu-fjf"/>
@@ -221,14 +221,22 @@
                                         <action selector="setBestPrice:" destination="-1" eventType="touchUpInside" id="ABj-gm-B5u"/>
                                     </connections>
                                 </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stop Loss" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zc3-Sj-cOc">
+                                    <rect key="frame" x="28" y="310" width="67.666666666666671" height="18"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <color key="textColor" name="Color-dark4"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <constraints>
                                 <constraint firstItem="iIj-04-1Ci" firstAttribute="leading" secondItem="nYT-au-ghz" secondAttribute="leading" id="14m-ds-jrA"/>
                                 <constraint firstItem="GAR-qN-xvf" firstAttribute="leading" secondItem="nYT-au-ghz" secondAttribute="leading" constant="12" id="243-iE-0LA"/>
                                 <constraint firstItem="GAR-qN-xvf" firstAttribute="centerY" secondItem="nYT-au-ghz" secondAttribute="centerY" id="3Ld-Jf-Dj8"/>
+                                <constraint firstItem="zc3-Sj-cOc" firstAttribute="leading" secondItem="iIj-04-1Ci" secondAttribute="leading" constant="12" id="6kt-G8-em3"/>
                                 <constraint firstItem="POe-BV-ibP" firstAttribute="leading" secondItem="k9h-xW-rQZ" secondAttribute="leading" constant="16" id="7XW-hp-wW7"/>
                                 <constraint firstItem="8PH-rd-O04" firstAttribute="top" secondItem="0Cv-AI-Sk9" secondAttribute="top" id="AtF-Dv-2hN"/>
                                 <constraint firstItem="Niq-X3-TVH" firstAttribute="top" secondItem="nYT-au-ghz" secondAttribute="bottom" constant="20" id="BNF-9P-Wla"/>
+                                <constraint firstItem="zc3-Sj-cOc" firstAttribute="centerY" secondItem="iIj-04-1Ci" secondAttribute="centerY" id="Bx5-ls-iHe"/>
                                 <constraint firstItem="nYT-au-ghz" firstAttribute="top" secondItem="POe-BV-ibP" secondAttribute="bottom" constant="40" id="E5R-b4-xTe"/>
                                 <constraint firstAttribute="trailing" secondItem="Fb9-mL-KG5" secondAttribute="trailing" constant="16" id="E5X-cg-VZP"/>
                                 <constraint firstAttribute="trailing" secondItem="nYT-au-ghz" secondAttribute="trailing" constant="16" id="HtZ-go-pmW"/>
